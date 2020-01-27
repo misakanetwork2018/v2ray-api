@@ -8,10 +8,12 @@ import (
 	"github.com/akkuman/parseConfig"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"v2ray.com/core/app/proxyman/command"
 	statsService "v2ray.com/core/app/stats/command"
 	"v2ray.com/core/common/protocol"
@@ -157,6 +159,31 @@ func main() {
 		c.JSON(200, gin.H{
 			"success": success,
 			"msg":     msg,
+		})
+		_, _, _ = shell("systemctl restart v2ray-proxy")
+	})
+	r.POST("/status", func(c *gin.Context) {
+		var loadavg, uptime string
+		data, err := ioutil.ReadFile("/proc/loadavg")
+		if err != nil {
+			fmt.Println("File reading error", err)
+			goto end
+		}
+		loadavg = string(data)
+		data, err = ioutil.ReadFile("/proc/uptime")
+		if err != nil {
+			fmt.Println("File reading error", err)
+			goto end
+		}
+		uptime = strings.Split(string(data), " ")[0]
+	end:
+		c.JSON(200, gin.H{
+			"success": success,
+			"msg":     msg,
+			"data": gin.H{
+				"loadavg": loadavg,
+				"uptime":  uptime,
+			},
 		})
 	})
 	addressI := config.Get("address")
