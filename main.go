@@ -169,13 +169,14 @@ func main() {
 			fmt.Println("File reading error", err)
 			goto end
 		}
-		loadavg = string(data)
+		loadavg = strings.Replace(string(data), "\n", "", 1)
 		data, err = ioutil.ReadFile("/proc/uptime")
 		if err != nil {
 			fmt.Println("File reading error", err)
 			goto end
 		}
 		uptime = strings.Split(string(data), " ")[0]
+		success = true
 	end:
 		c.JSON(200, gin.H{
 			"success": success,
