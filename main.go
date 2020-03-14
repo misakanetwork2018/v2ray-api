@@ -180,7 +180,6 @@ func main() {
 	end:
 		c.JSON(200, gin.H{
 			"success": success,
-			"msg":     msg,
 			"data": gin.H{
 				"loadavg": loadavg,
 				"uptime":  uptime,
