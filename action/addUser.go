@@ -17,7 +17,7 @@ func AddUser(users *[]api.V2RayUser) func(c *gin.Context) {
 			utils.RespondWithError(403, "Email Required", c)
 			return
 		}
-		UUID := c.PostForm("email")
+		UUID := c.PostForm("uuid")
 		if UUID == "" {
 			utils.RespondWithError(403, "UUID Required", c)
 			return
