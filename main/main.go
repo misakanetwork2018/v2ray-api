@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/akkuman/parseConfig"
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,12 @@ var (
 )
 
 func main() {
-	var config = parseConfig.New("/etc/v2ray/api_config.json")
+	var configFile string
+
+	flag.StringVar(&configFile, "c", "/etc/v2ray/api_config.json", "Config file path, default: /etc/v2ray/api_config.json")
+	flag.Parse()
+
+	var config = parseConfig.New(configFile)
 	accessKeyI := config.Get("key")
 	if accessKeyI == nil {
 		fmt.Println("No access key set. Abort.")
