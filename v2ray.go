@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"v2ray.com/core/app/proxyman/command"
 	statsService "v2ray.com/core/app/stats/command"
@@ -32,7 +33,8 @@ type V2RayUser struct {
 
 func InitGRPC() {
 	var err error
-	cmdConn, err = grpc.Dial(fmt.Sprintf("%s:%d", apiAddress, apiPort), grpc.WithInsecure())
+	cmdConn, err = grpc.Dial(fmt.Sprintf("%s:%d", apiAddress, apiPort),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
