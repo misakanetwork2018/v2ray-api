@@ -17,7 +17,7 @@ const (
 	apiAddress = "127.0.0.1"
 	apiPort    = 8848
 	InboundTag = "proxy"
-	ALTERID    = 64
+	ALTERID    = 0
 )
 
 var (
